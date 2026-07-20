@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching Materials — José Antonio Muñiz, PhD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F4EF;
+    --ink: #1A1814;
+    --warm-mid: #8C7B6B;
+    --accent: #2D5016;
+    --accent-light: #4A7A28;
+    --rule: #D4C9B8;
+    --paper: #FEFCF8;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+ 
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+ 
+  .nav-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+ 
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+ 
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+ 
+  .nav-links a:hover { color: var(--ink); }
+ 
+  /* LAYOUT */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+ 
+  main.page {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+ 
+  .page-header {
+    margin-bottom: 40px;
+  }
+ 
+  .page-header h1 {
+    font-size: 2.6rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+ 
+  .page-header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+  }
+ 
+  /* COURSE SECTIONS */
+  .course-section {
+    padding: 36px 0;
+    border-top: 3px solid var(--rule);
+    scroll-margin-top: 80px; /* keeps the fixed nav from covering the anchor target */
+  }
+ 
+  .course-section h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-style: normal;
+    margin-bottom: 4px;
+  }
+ 
+  .course-section .course-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    /* text-transform: uppercase; */
+    color: var(--warm-mid);
+    margin-bottom: 22px;
+  }
+ 
+  /* MATERIAL CARDS */
+  .material-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+ 
+  .material-card {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 14px 18px;
+  }
+ 
+  .material-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+ 
+  .material-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 7px;
+    flex-shrink: 0;
+  }
+ 
+  .material-name {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+ 
+  .material-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+ 
+  .material-actions button,
+  .material-actions a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+ 
+  .material-actions button:hover,
+  .material-actions a:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+ 
+  .material-preview {
+    display: none;
+    margin-top: 14px;
+    border: 1px solid var(--rule);
+    background: #fff;
+  }
+ 
+  .material-preview.open { display: block; }
+ 
+  .material-preview iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+  }
+ 
+  .material-preview .preview-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--warm-mid);
+    padding: 10px 14px;
+    border-top: 1px solid var(--rule);
+  }
+ 
+  .empty-note {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--warm-mid);
+  }
+ 
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0;
+  }
+ 
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--warm-mid);
+  }
+ 
+  @media (max-width: 700px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 20px; }
+    .page { padding: 0 20px; }
+    .material-row { flex-wrap: wrap; }
+    .material-actions { width: 100%; }
+  }
+</style>
+</head>
+<body>
+ 
+<!-- NAVIGATION -->
+<nav>
+  <a class="nav-name" href="index.html">José Antonio Muñiz, PhD</a>
+  <ul class="nav-links">
+    <!-- <li><a href="index.html#teaching">Back to Teaching</a></li> -->
+    <li><a href="index.html">Back Home</a></li>
+  </ul>
+</nav>
+ 
+<main class="page">
+  <div class="page-header">
+    <h1>Teaching Materials</h1>
+    <p>Slides, notes and course resources</p>
+  </div>
+  <!-- Course sections are rendered here by the script below,
+       based on the COURSES array. -->
+  <div id="courses-container"></div>
+</main>
+ 
+<footer class="page">
+  <p>© 2026 José Antonio Muñiz, PhD · Financial Economics & Policy</p>
+</footer>
+ 
+<script>
+/* ============================================================
+   COURSE MATERIALS CONFIG
+   ============================================================
+   To add a new course, add an object to the COURSES array below.
+ 
+   id       -> must match the anchor used in the "Slides" link on
+               index.html (e.g. href="slides.html#intro-mathematics")
+   title    -> heading shown on this page
+   subtitle -> small line under the heading (institution / program)
+   files    -> array of files for that course. Leave as an empty
+               array [] until you have material to add.
+ 
+   Each file object looks like:
+   {
+     name: "Lecture 1 — Sets and Logic",   // label shown to the user
+     path: "materials/intro-mathematics/lecture-01.pdf", // path to the file in the repo
+     type: "pdf"   // one of: "pdf", "office", "html", "other"
+   }
+ 
+   type meaning:
+   - "pdf"    -> previewed directly in the browser (native PDF viewer)
+   - "office" -> .pptx / .docx / .xlsx — previewed via Google Docs
+                 Viewer (only works once the site is live on
+                 GitHub Pages, not on your local machine)
+   - "html"   -> e.g. a rendered Quarto/Reveal.js slide deck —
+                 previewed directly in an iframe
+   - "other"  -> anything else — no preview, just a Download button
+ 
+   Where to put the actual files:
+   Create a folder such as /materials/intro-mathematics/ in the
+   repo root, drop your PDFs/PPTX/etc. in there, and reference
+   them with their relative path in "path" below.
+   ============================================================ */
+ 
+  const COURSES = [
+    {
+      id: "intro-mathematics",
+      title: "Introduction to Mathematics",
+      subtitle: "MSc Management | Global MSc Management · Department of Management, LSE",
+      files: [
+        // ★ These are placeholder PDFs so you can see the page working.
+        //   Replace the "path" with your real file once you upload it
+        //   (keep the same file name, or update the path to match).
+        { name: "Lecture 1 — Sets and Logic", path: "materials/intro-mathematics/lecture-01-sets-and-logic.pdf", type: "pdf" },
+        // { name: "Problem Set 1", path: "materials/intro-mathematics/problem-set-01.pdf", type: "slides" },
+      ]
+    },
+    {
+      id: "intro-statistics",
+      title: "Introduction to Statistics",
+      subtitle: "MSc Management · Department of Management, LSE",
+      files: [
+        // ★ Placeholder PDF — replace once you upload the real file.
+        { name: "Lecture 1 — Descriptive Statistics", path: "materials/intro-statistics/lecture-01-descriptive-statistics.pdf", type: "pdf" },
+      ]
+    },
+    // {
+    //   id: "intro-statistics2",
+    //   title: "Introduction to Statistics 2",
+    //   subtitle: "GMSc Management · Department of Management, LSE",
+    //   files: [
+    //     // ★ Placeholder PDF — replace once you upload the real file.
+    //     { name: "Lecture 1 — Descriptive Statistics 2", path: "materials/intro-statistics/lecture-01-descriptive-statistics2.pdf", type: "pdf" },
+    //   ]
+    // },
+    
+ 
+    // ★ Add more courses here, following the same pattern.
+  ];
+ 
+  const ICONS = { pdf: "PDF", slides: "Slides", html: "HTML", other: "File" };
+ 
+  function buildPreview(file, containerId) {
+    if (file.type === "pdf" || file.type === "html") {
+      return `<div class="material-preview" id="${containerId}">
+                <iframe src="${file.path}" loading="lazy"></iframe>
+              </div>`;
+    }
+    if (file.type === "office") {
+      const encoded = encodeURIComponent(new URL(file.path, window.location.href).href);
+      return `<div class="material-preview" id="${containerId}">
+                <iframe src="https://docs.google.com/viewer?url=${encoded}&embedded=true" loading="lazy"></iframe>
+                <p class="preview-note">Preview via Google Docs Viewer — only works once the site is live on GitHub Pages.</p>
+              </div>`;
+    }
+    return `<div class="material-preview" id="${containerId}">
+              <p class="preview-note">No inline preview available for this file type — use Download.</p>
+            </div>`;
+  }
+ 
+  function renderCourses() {
+    const container = document.getElementById("courses-container");
+    container.innerHTML = COURSES.map((course, ci) => {
+      const filesHtml = course.files.length
+        ? course.files.map((file, fi) => {
+            const previewId = `preview-${ci}-${fi}`;
+            return `
+              <div class="material-card">
+                <div class="material-row">
+                  <span class="material-icon">${ICONS[file.type] || "File"}</span>
+                  <span class="material-name">${file.name}</span>
+                  <div class="material-actions">
+                    <button onclick="document.getElementById('${previewId}').classList.toggle('open')">Preview</button>
+                    <a href="${file.path}" download style="display:none">Download</a>
+                  </div>
+                </div>
+                ${buildPreview(file, previewId)}
+              </div>`;
+          }).join("")
+        : `<p class="empty-note">Slides for this course will be posted here soon.</p>`;
+ 
+      return `
+        <section class="course-section" id="${course.id}">
+          <h2>${course.title}</h2>
+          <p class="course-subtitle">${course.subtitle}</p>
+          <div class="material-list">
+            ${filesHtml}
+          </div>
+        </section>`;
+    }).join("");
+ 
+    // If we arrived with a #hash, make sure the browser scrolls to it
+    // after the content above has been injected into the page.
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) target.scrollIntoView();
+    }
+  }
+ 
+  renderCourses();
+</script>
+</body>
+</html>
